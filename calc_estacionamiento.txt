@@ -1,0 +1,161 @@
+import 'package:flutter/material.dart';
+
+main() => runApp(Controles());
+
+class Controles extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return Estado();
+  }
+}
+
+class Estado extends State {
+  double sumaInicial = 0.0; //precio por hora
+  double sumaFinal = 0.0; //precio por fraccion de hora
+  double resta;
+  double horainicial; //tiempo de inicio
+  double minutosinicial; //tiempo de inicio
+  double horafinal; //tiempo final
+  double minutosfinal; //tiempo final en minutos ;v
+  double fin; // resulta final
+
+  //1 hora = 60 minutos
+  /*
+  1 hora= 40, fraccion= 10
+
+
+  Hora inicial= 5   =====> 17*60+ minutos ====>  300+26 = 326minutos 
+  minutos: 26            17:26pm
+
+  Hora final= 8   =======> 20*60+minutisfinal ====> 480+50 = 530minutos
+  minutosfinal= 50           20:50pm
+
+  resultadofinal===> 530-326 =204minutos  
+
+
+
+  204/10 =  20.4 ====> 21 * costo ====> fin 
+
+
+  */
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Estacionamiento'),
+          ),
+          body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(children: <Widget>[
+                Text('Precios'),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: TextField(
+                            decoration: InputDecoration(
+                      icon: Icon(Icons.monetization_on),
+                      hintText: 'Por hora 40 pesos',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular((10))),
+                    ))),
+                    Expanded(
+                        child: TextField(
+                            decoration: InputDecoration(
+                      hintText: 'Por fraccion 10 pesos',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular((10))),
+                    ))),
+                  ],
+                ),
+                Text('Hora Inicial'),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: TextField(
+                            onChanged: (cobrohora) {
+                              setState(() {
+                                horainicial = double.parse(cobrohora) * 60;
+                                sumaInicial = horainicial + minutosinicial;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.access_time),
+                              hintText: 'Horas en formato 24hr >:v',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular((20))),
+                            ))),
+                    Expanded(
+                        child: TextField(
+                            onChanged: (cobrominutos) {
+                              setState(() {
+                                minutosinicial = double.parse(cobrominutos);
+                                sumaInicial = horainicial + minutosinicial;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Minutos',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular((20))),
+                            ))),
+                  ],
+                ),
+                Text('Horas $horainicial'),
+                Text('Minutos $minutosinicial'),
+                Text('Resultado minutosInicial $sumaInicial'),
+                Text(''),
+                Text('Hora final'),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: TextField(
+                            onChanged: (cobrohorafinal) {
+                              setState(() {
+                                horafinal = double.parse(cobrohorafinal) * 60;
+                                sumaFinal = minutosfinal + horafinal;
+                                resta = sumaFinal - sumaInicial;
+                                fin = (resta / 15) * 10;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.access_time),
+                              hintText: 'Horas',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular((20))),
+                            ))),
+                    Expanded(
+                        child: TextField(
+                            onChanged: (cobrominutosfinal) {
+                              setState(() {
+                                minutosfinal = double.parse(cobrominutosfinal);
+                                sumaFinal = minutosfinal + horafinal;
+                                resta = sumaFinal - sumaInicial;
+                                fin = (resta / 15) * 10;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              hintText: 'Minutos',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular((20))),
+                            ))),
+                  ],
+                ),
+                Text('Horas $horafinal'),
+                Text('minutos $minutosfinal'),
+                Text('Resultado de los minutos $sumaFinal'),
+                Text('Resultado de resta $resta'),
+                Text(''),
+                Text(
+                  'El costo total del estacionamiento es: $fin\n pesos :v',
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )
+              ])),
+        ));
+  }
+}
